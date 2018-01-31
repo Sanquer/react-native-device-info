@@ -202,8 +202,8 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         TelephonyManager telMgr = (TelephonyManager) this.reactContext.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         constants.put("phoneNumber", telMgr.getLine1Number());
       }
-    } catch (ClassNotFoundException e) {
-      constants.put("phoneNumber","");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     
     constants.put("carrier", this.getCarrier());
