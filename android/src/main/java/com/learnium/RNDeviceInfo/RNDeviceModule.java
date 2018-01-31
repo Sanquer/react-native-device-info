@@ -193,13 +193,19 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     constants.put("isEmulator", this.isEmulator());
     constants.put("isTablet", this.isTablet());
     constants.put("is24Hour", this.is24Hour());
-    if (getCurrentActivity() != null &&
+
+    try {
+      if (getCurrentActivity() != null &&
           (getCurrentActivity().checkCallingOrSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ||
             getCurrentActivity().checkCallingOrSelfPermission(Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED ||
             getCurrentActivity().checkCallingOrSelfPermission("android.permission.READ_PHONE_NUMBERS") == PackageManager.PERMISSION_GRANTED)) {
         TelephonyManager telMgr = (TelephonyManager) this.reactContext.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         constants.put("phoneNumber", telMgr.getLine1Number());
+      }
+    } catch (ClassNotFoundException e) {
+      constants.put("phoneNumber","");
     }
+    
     constants.put("carrier", this.getCarrier());
 
     Runtime rt = Runtime.getRuntime();
